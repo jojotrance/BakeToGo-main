@@ -75,10 +75,4 @@ $(document).ready(function() {
     }).on('mouseleave', '.order-card', function() {
         $(this).removeClass('hover');
     });
-
-    // Review button click event
-    $(document).on('click', '.review-button', function() {
-        // Implement your review functionality here
-        alert('Review functionality to be implemented');
-    });
 });

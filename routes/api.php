@@ -18,7 +18,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\ReviewController;
 
 
 
@@ -29,6 +29,8 @@ Route::apiResource('payment-methods', PaymentMethodController::class);
 Route::apiResource('admin/users', UserManagementController::class)->except(['create', 'edit']);
 Route::apiResource('couriers', CourierController::class);
 Route::apiResource('shop', ShopController::class);
+Route::apiResource('reviews', ReviewController::class)->only(['store', 'update', 'destroy']);
+
 
 // Sanctum authenticated user route
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -144,6 +146,11 @@ Route::group(['middleware' => ['auth:sanctum', 'is_customer']], function () {
     Route::post('/customer/orders/status', [ApiCustomerController::class, 'updateOrderStatus'])->name('api.customer.orders.updateStatus');
     Route::post('/addtoCart', [ShopController::class, 'addToCart']);
     Route::post('/checkout', [ShopController::class, 'checkout']);
+
     // Review routes
     Route::get('/customer/reviews/history', [ReviewController::class, 'history'])->name('api.customer.reviews.history');
+    Route::post(('customer/reviews/store'), [ReviewController::class, 'store'])->name('api.customer.reviews.store');
+    Route::post('/customer/reviews/update-status', [ReviewController::class, 'updateStatus'])->name('api.customer.reviews.updateStatus');
+    // Route::post('/customer/orders/{orderId}/update-status', [OrderController::class, 'updateStatus']);
+    // // Route::put('/customer/reviews/{review}', [ReviewController::class, 'create'])->name('api.customer.reviews.create');
 });
